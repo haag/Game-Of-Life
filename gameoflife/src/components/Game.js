@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import "../style/Game.css";
 
 const CELL_SIZE = 40
-const WIDTH = 800
-const HEIGHT = 600
+const WIDTH = 802
+const HEIGHT = 603
 
 class Cell extends Component {
     render(){
@@ -11,8 +11,8 @@ class Cell extends Component {
         const {x, y} = this.props
         return (
             <div className="Cell" style={{
-                left: `${CELL_SIZE * x + 5}px`,
-                top: `${CELL_SIZE * y + 1}px`,
+                left: `${CELL_SIZE * x + 2}px`,
+                top: `${CELL_SIZE * y + 2}px`,
                 width: `${CELL_SIZE - 1}px`,
                 height: `${CELL_SIZE - 1}px`,
             }} />
