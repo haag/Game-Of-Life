@@ -30,21 +30,37 @@ class Game extends Component {
     }
     state = { 
         cells: [],
-        interval:100,
+        interval: 100,
         inRunning: false, 
     }
 
     runGame = () => {
-        this.this.setState({ isRunning: true })
+        this.setState({ isRunning: true })
         this.runIteration()
     }
 
     stopGame = () => {
         this.setState({ isRunning: false })
+        if ( this.timeoutHandler) {
+            window.clearTimeout(this.timeoutHandler)
+            this.timeoutHandler = null
+        }
+    }
+
+    runIteration() {
+        console.log('running iteration')
+        // let newBoard = this.makeEmptyBoard()
+
+        // this.board = newBoard
+        // this.setState({ cells: this.makeCells()})
+
+        this.timeoutHandler = window.setTimeout(() => {
+            this.runIteration()
+        }, this.state.interval);
     }
 
     handleIntervalChange = (e) => {
-        this.this.setState({ interval: e.target.value})
+        this.setState({ interval: e.target.value})
     }
 
     makeEmptyBoard(){
