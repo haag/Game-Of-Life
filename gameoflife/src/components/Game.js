@@ -3,7 +3,7 @@ import "../style/Game.css";
 
 const CELL_SIZE = 40
 const WIDTH = 802
-const HEIGHT = 603
+const HEIGHT = 602
 
 class Cell extends Component {
     render(){
@@ -11,8 +11,8 @@ class Cell extends Component {
         const {x, y} = this.props
         return (
             <div className="Cell" style={{
-                left: `${CELL_SIZE * x + 2}px`,
-                top: `${CELL_SIZE * y + 2}px`,
+                left: `${CELL_SIZE * x + 1 }px`,
+                top: `${CELL_SIZE * y + 1 }px`,
                 width: `${CELL_SIZE - 1}px`,
                 height: `${CELL_SIZE - 1}px`,
             }} />
@@ -24,8 +24,8 @@ class Cell extends Component {
 class Game extends Component {
     constructor(){
         super();
-        this.rows = HEIGHT / CELL_SIZE
-        this.cols = WIDTH / CELL_SIZE
+        this.rows = (HEIGHT ) / CELL_SIZE
+        this.cols = (WIDTH )/ CELL_SIZE
         this.board = this.makeEmptyBoard()
     }
     state = { 
@@ -57,13 +57,10 @@ class Game extends Component {
                 if(this.board[y][x]) {
                     if(neighbors === 2 || neighbors === 3){
                         newBoard[y][x] = true
+                    } else{
+                        newBoard[y][x] = false   
                     }
-                    else{
-                        newBoard[y][x] = false
-                        
-                    }
-                }
-                else{
+                } else{
                     if(!this.board[y][x] && neighbors === 3) {
                         newBoard[y][x] = true
                     }
@@ -148,14 +145,13 @@ class Game extends Component {
                 neighbors++;
             }
         }
-
         return neighbors;
     }
 
     render(){
         const { cells } = this.state
         return(
-            <div>
+            <div className="TEST">
                 <div className="Board"
                     style={{
                         width: WIDTH, 
@@ -169,22 +165,23 @@ class Game extends Component {
                         x={cell.x} 
                         y={cell.y}
                         key={`${cell.x},${cell.y}`}
-
                         />
                     ))}
                     
                 </div>
                 <div className="Controls">
-                Frequency (msec): <input 
+                Frequency (msec): <br/> <input 
                 value={this.state.interval}
                 onChange={this.handleIntervalChange} />
-                
+
                 {this.state.isRunning ?
                 <button className="button"
-                    onClick={this.stopGame}> Stop </button> :
+                    onClick={this.stopGame}>Stop</button> :
                 <button className="button"
-                    onClick={this.runGame}> Run </button>
+                    onClick={this.runGame}>Run</button>
                 }
+                <br/>
+                <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
             </div>
         )
