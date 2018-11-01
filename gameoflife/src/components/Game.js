@@ -46,13 +46,33 @@ class Game extends Component {
             this.timeoutHandler = null
         }
     }
-
+    
     runIteration() {
         console.log('running iteration')
-        // let newBoard = this.makeEmptyBoard()
+        let newBoard = this.makeEmptyBoard()
 
-        // this.board = newBoard
-        // this.setState({ cells: this.makeCells()})
+        for(let y =0; y < this.rows; y++) {
+            for(let x =0; x< this.cols; x++) {
+                let neighbors = this.calculateNeighbors(this.board, x, y)
+                if(this.board[y][x]) {
+                    if(neighbors === 2 || neighbors === 3){
+                        newBoard[y][x] = true
+                    }
+                    else{
+                        newBoard[y][x] = false
+                        
+                    }
+                }
+                else{
+                    if(!this.board[y][x] && neighbors === 3) {
+                        newBoard[y][x] = true
+                    }
+                }
+            }
+        }
+
+        this.board = newBoard
+        this.setState({ cells: this.makeCells()})
 
         this.timeoutHandler = window.setTimeout(() => {
             this.runIteration()
@@ -110,6 +130,27 @@ class Game extends Component {
         this.setState({ cells: this.makeCells() })
     }
 
+      /**
+     * Calculate the number of neighbors at point (x, y)
+     * @param {Array} board 
+     * @param {int} x 
+     * @param {int} y 
+     */
+    calculateNeighbors(board, x, y) {
+        let neighbors = 0;
+        const dirs = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]];
+        for (let i = 0; i < dirs.length; i++) {
+            const dir = dirs[i];
+            let y1 = y + dir[0];
+            let x1 = x + dir[1];
+
+            if (x1 >= 0 && x1 < this.cols && y1 >= 0 && y1 < this.rows && board[y1][x1]) {
+                neighbors++;
+            }
+        }
+
+        return neighbors;
+    }
 
     render(){
         const { cells } = this.state
@@ -133,10 +174,11 @@ class Game extends Component {
                     ))}
                     
                 </div>
-                <div className="controls">
-                Update every <input 
+                <div className="Controls">
+                Frequency (msec): <input 
                 value={this.state.interval}
-                onChange={this.handleIntervalChange} />  msec
+                onChange={this.handleIntervalChange} />
+                
                 {this.state.isRunning ?
                 <button className="button"
                     onClick={this.stopGame}> Stop </button> :

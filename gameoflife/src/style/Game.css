@@ -1,12 +1,17 @@
 .Board {
     position: relative;
-    /* margin: auto; */
-
+    margin: auto;
     background-color: darkslategray;
     background-image:
         linear-gradient(aqua 1px, transparent 1px),
         linear-gradient(90deg, aqua 1px, transparent 1px);
     border: 5px solid black;
+}
+.Controls {
+    position: relative;
+    text-align: center;
+    background-color: rgb(146, 158, 175);
+    border: 5px solid rgba(0, 255, 255, 0.247);
 }
 
 .Cell {
