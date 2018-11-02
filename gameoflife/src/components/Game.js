@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
 import "../style/Game.css";
-
-const CELL_SIZE = 20
-const WIDTH = 800
-const HEIGHT = 600
-
-class Cell extends Component {
-    render(){
-        console.log("props", this.props)
-        const {x, y} = this.props
-        return (
-            <div className="Cell" style={{
-                left: `${CELL_SIZE * x + 1 }px`,
-                top: `${CELL_SIZE * y + 1 }px`,
-                width: `${CELL_SIZE - 1}px`,
-                height: `${CELL_SIZE - 1}px`,
-            }} />
-        )
-    }
-}
+import Cell from './Cell';
 
 
 class Game extends Component {
     constructor(){
         super();
-        this.rows = (HEIGHT ) / CELL_SIZE
-        this.cols = (WIDTH )/ CELL_SIZE
+        this.rows = (this.state.height ) / this.state.size
+        this.cols = (this.state.width )/ this.state.size
         this.board = this.makeEmptyBoard()
+        this.count = 0
     }
     state = { 
         cells: [],
         interval: 100,
         inRunning: false, 
+        width: 550,
+        height: 600,
+        size: 50,
+        rows: '',
+    }
+    
+    handleRow = (e) => {
+        // console.log("HANDLEROW", e.target.value)
+        // let rows = e.target.value * 50
+        this.setState({rows: e.target.value})
+        // console.log("state rows", this.state.rows)
+    }
+    updateRows = () => {
+        let test = this.state.rows * 50
+        this.setState({height: test})
+        console.log("State width", this.state.height)
+        console.log("State rows", this.state.rows)
+        
     }
 
     runGame = () => {
@@ -111,15 +112,15 @@ class Game extends Component {
             y: (rect.top + window.pageYOffset) - doc.clientTop,
         }
     }
-
+    
 
     handleClick = (e) => {
         const elemOffset = this.getElementOffset()
         const offsetX = e.clientX - elemOffset.x
         const offsetY = e.clientY - elemOffset.y
 
-        const x = Math.floor(offsetX / CELL_SIZE)
-        const y = Math.floor(offsetY / CELL_SIZE)
+        const x = Math.floor(offsetX / this.state.size)
+        const y = Math.floor(offsetY / this.state.size)
 
         if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
             this.board[y][x] = !this.board[y][x]
@@ -150,18 +151,20 @@ class Game extends Component {
 
     render(){
         const { cells } = this.state
+        console.log(this.state.width,this.state.height,this.state.size)
         return(
             <div className="TEST">
                 <div className="Board"
                     style={{
-                        width: WIDTH, 
-                        height: HEIGHT,
-                        backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}
+                        width: this.state.width, 
+                        height: this.state.height,
+                        backgroundSize: `${this.state.size}px ${this.state.size}px`}}
                     onClick={this.handleClick}
                     ref={(n) => { this.boardRef = n }}
                         >
                     {cells.map(cell => (
                         <Cell 
+                        size={this.state.size}
                         x={cell.x} 
                         y={cell.y}
                         key={`${cell.x},${cell.y}`}
@@ -180,9 +183,30 @@ class Game extends Component {
                 <button className="button"
                     onClick={this.runGame}>Run</button>
                 }
+
+
+                <form onSubmit={this.handleRow}>
+                    <label>
+                        <br/><br/> Num of Rows <br/>
+                            <input 
+                                value={this.state.rows} 
+                                onChange={this.handleRow} />
+                    </label>
+                        <input 
+                            type="submit"
+                            value="Submit"
+                            onClick={this.updateRows} />
+                </form>
+                
+                
+                <br/><br/> Num of Cols: <br/> 
+                <input 
+                    value={this.cols} />
                 <br/>
                 <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
+                <form>{this.count++}: Generations</form>
+
             </div>
         )
     }
