@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import "../style/Game.css";
 import Cell from './Cell';
+import "../style/Game.css";
 
 
 class Game extends Component {
@@ -15,24 +15,29 @@ class Game extends Component {
         cells: [],
         interval: 100,
         inRunning: false, 
-        width: 550,
+        width: 600,
         height: 600,
-        size: 50,
+        size: 20,
         rows: '',
+        cols: '',
     }
     
+    //This Block Changes grid size
     handleRow = (e) => {
-        // console.log("HANDLEROW", e.target.value)
-        // let rows = e.target.value * 50
+        e.preventDefault()
         this.setState({rows: e.target.value})
-        // console.log("state rows", this.state.rows)
     }
     updateRows = () => {
-        let test = this.state.rows * 50
-        this.setState({height: test})
-        console.log("State width", this.state.height)
-        console.log("State rows", this.state.rows)
-        
+        let new_height = this.state.rows * 50
+        this.setState({ height: new_height})
+    }
+    handleCol = (e) => {
+        e.preventDefault()
+        this.setState({cols: e.target.value})
+    }
+    updateCols = () => {
+        let new_width = this.state.cols * 50
+        this.setState({ width: new_width})
     }
 
     runGame = () => {
@@ -47,9 +52,12 @@ class Game extends Component {
             this.timeoutHandler = null
         }
     }
-    
+    counter() {
+        this.count += 1
+    }
     runIteration() {
         console.log('running iteration')
+        this.counter()
         let newBoard = this.makeEmptyBoard()
 
         for(let y =0; y < this.rows; y++) {
@@ -184,28 +192,30 @@ class Game extends Component {
                     onClick={this.runGame}>Run</button>
                 }
 
-
                 <form onSubmit={this.handleRow}>
-                    <label>
-                        <br/><br/> Num of Rows <br/>
-                            <input 
-                                value={this.state.rows} 
-                                onChange={this.handleRow} />
-                    </label>
+                    <br/> Num of Rows: <br/>
                         <input 
-                            type="submit"
-                            value="Submit"
-                            onClick={this.updateRows} />
+                            value={this.state.rows} 
+                            onChange={this.handleRow}
+                            placeholder={this.rows} />
+                    <input type="submit" value="Submit"
+                        onClick={this.updateRows} />
+                </form>
+                <form onSubmit={this.handleCol}>
+                    <br/> Num of Cols: <br/>
+                        <input 
+                            value={this.state.cols} 
+                            onChange={this.handleCol}
+                            placeholder={this.cols} />
+                    <input type="submit" value="Submit"
+                        onClick={this.updateCols} />
                 </form>
                 
-                
-                <br/><br/> Num of Cols: <br/> 
-                <input 
-                    value={this.cols} />
                 <br/>
+                <form>{this.count}: Generations</form>
+    
                 <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
-                <form>{this.count++}: Generations</form>
 
             </div>
         )
