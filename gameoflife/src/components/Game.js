@@ -27,18 +27,21 @@ class Game extends Component {
         e.preventDefault()
         this.setState({rows: e.target.value})
     }
-    updateRows = () => {
-        let new_height = this.state.rows * 50
-        this.setState({ height: new_height})
-    }
     handleCol = (e) => {
         e.preventDefault()
         this.setState({cols: e.target.value})
     }
-    updateCols = () => {
-        let new_width = this.state.cols * 50
-        this.setState({ width: new_width})
+    
+    updateRowsCols = (inp) => {
+        if(inp === "row"){
+            let new_height = this.state.rows * this.state.size
+            this.setState({ height: new_height})
+        } else {
+            let new_width = this.state.cols * this.state.size
+            this.setState({ width: new_width})
+        }
     }
+
 
     runGame = () => {
         this.setState({ isRunning: true })
@@ -199,7 +202,7 @@ class Game extends Component {
                             onChange={this.handleRow}
                             placeholder={this.rows} />
                     <input type="submit" value="Submit"
-                        onClick={this.updateRows} />
+                        onClick={() => this.updateRowsCols("row")} />
                 </form>
                 <form onSubmit={this.handleCol}>
                     <br/> Num of Cols: <br/>
@@ -208,7 +211,7 @@ class Game extends Component {
                             onChange={this.handleCol}
                             placeholder={this.cols} />
                     <input type="submit" value="Submit"
-                        onClick={this.updateCols} />
+                        onClick={() => this.updateRowsCols("col")} />
                 </form>
                 
                 <br/>
