@@ -3,7 +3,7 @@ import "../style/Cell.css";
 
 class Cell extends Component {
     render(){
-        console.log("props", this.props)
+        // console.log("props", this.props)
         const { x, y, size } = this.props
         return (
             <div className="Cell" style={{

@@ -31,7 +31,7 @@ class Game extends Component {
         e.preventDefault()
         this.setState({cols: e.target.value})
     }
-    
+
     updateRowsCols = (inp) => {
         if(inp === "row"){
             let new_height = this.state.rows * this.state.size
@@ -59,7 +59,7 @@ class Game extends Component {
         this.count += 1
     }
     runIteration() {
-        console.log('running iteration')
+        // console.log('running iteration')
         this.counter()
         let newBoard = this.makeEmptyBoard()
 
@@ -79,7 +79,6 @@ class Game extends Component {
                 }
             }
         }
-
         this.board = newBoard
         this.setState({ cells: this.makeCells()})
 
@@ -159,10 +158,27 @@ class Game extends Component {
         }
         return neighbors;
     }
+    handleRandom = () => {
+        for (let y = 0; y < this.rows; y++) {
+            for (let x = 0; x < this.cols; x++) {
+                this.board[y][x] = (Math.random() >= 0.5);
+            }
+        }
+        this.setState({ cells: this.makeCells() });
+    }
 
+    handleClear = () => {
+        this.board = this.makeEmptyBoard();
+        this.setState({ cells: this.makeCells() });
+    }
+    // handleGenerations = (e) => {
+    //     e.preventDefault()
+    //     console.log(e.target.value)
+    //     this.count = e.target.value
+    // }
     render(){
         const { cells } = this.state
-        console.log(this.state.width,this.state.height,this.state.size)
+        // console.log(this.state.width,this.state.height,this.state.size)
         return(
             <div className="TEST">
                 <div className="Board"
@@ -198,7 +214,7 @@ class Game extends Component {
                 <form onSubmit={this.handleRow}>
                     <br/> Num of Rows: <br/>
                         <input 
-                            value={this.state.rows} 
+                            value={this.state.rows || ''} 
                             onChange={this.handleRow}
                             placeholder={this.rows} />
                     <input type="submit" value="Submit"
@@ -207,16 +223,29 @@ class Game extends Component {
                 <form onSubmit={this.handleCol}>
                     <br/> Num of Cols: <br/>
                         <input 
-                            value={this.state.cols} 
+                            value={this.state.cols || ''} 
                             onChange={this.handleCol}
                             placeholder={this.cols} />
-                    <input type="submit" value="Submit"
-                        onClick={() => this.updateRowsCols("col")} />
+                        <input type="submit" value="Submit"
+                            onClick={() => this.updateRowsCols("col")} />
                 </form>
                 
+                <form onSubmit={this.handleGenerations}>
+                    <br/> Generation: <br/>
+                    <input 
+                    value={this.count}
+                    onChange={this.handleGenerations} />
+                    <input type="submit" value="Submit"
+                        onClick={this.updateGenerations} />
                 <br/>
-                <form>{this.count}: Generations</form>
+                        <button>Prev</button>
+                        <button>Next</button>
+                </form>
+                <br/>
+           
     
+                <button onClick={this.handleClear}>Clear</button> <br/>
+                <button onClick={this.handleRandom}>Random</button> <br/>
                 <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
 
