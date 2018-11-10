@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import Cell from './Cell';
 import "../style/Game.css";
 
+//TODO:
+//Fix random button so that this.rows/cols updates AFTER ajusting the size with submit button
+//Implement Prev, Next, and Goto generation #
+//Add sizing options (change this.state.size) Tiny, small, medium, big, massive
+//Add presets (glider, etc)
+//Separate the controls from the grid, page scrolling
+//Figure out why bottom and right are cut off
 
 class Game extends Component {
     constructor(){
@@ -17,7 +24,7 @@ class Game extends Component {
         inRunning: false, 
         width: 600,
         height: 600,
-        size: 20,
+        size: 30,
         rows: '',
         cols: '',
     }
@@ -159,6 +166,8 @@ class Game extends Component {
         return neighbors;
     }
     handleRandom = () => {
+        console.log(this.rows)
+        console.log(this.state.height)
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.cols; x++) {
                 this.board[y][x] = (Math.random() >= 0.5);
@@ -244,7 +253,7 @@ class Game extends Component {
                 <br/>
            
     
-                <button onClick={this.handleClear}>Clear</button> <br/>
+                <button style={{backgroundColor: "primary"}} onClick={this.handleClear}>Clear</button> <br/>
                 <button onClick={this.handleRandom}>Random</button> <br/>
                 <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
